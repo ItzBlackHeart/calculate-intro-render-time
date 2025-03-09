@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Calculate Intro Render Time</title>
+</head>
+<body>
+
+    <h1>คำนวณเวลาเรนเดอร์</h1>
+  
+  <!-- แบบฟอร์ม -->
+  <div class="timeForm-row">
+    <form class="timeForm">
+      <label>
+        ชั่วโมง:
+        <input type="number" class="hours" min="0" value="">
+      </label>
+      <label>
+        นาที:
+        <input type="number" class="minutes" min="0" max="59" value="">
+      </label>
+      <label>
+        วินาที:
+        <input type="number" class="seconds" min="0" max="59" value="">
+      </label>
+      <button type="button" class="removeButton">X</button>
+    </form>
+  </div>
+
+  <!-- ปุ่ม -->
+  <div class="all-btn">
+    <button type="button" id="addButton">+ เพิ่ม</button>
+    <button type="button" id="calculateButton">คำนวณ</button>
+  </div>
+  
+  <!-- แสดงผลรวม -->
+  <div class="result">
+    <div>รวมชั่วโมง:<span id="totalHours">0</span></div>
+    <div>รวมนาที:<span id="totalMinutes">0</span></div>
+    <div>รวมวินาที:<span id="totalSeconds">0</span></div>
+  </div>
+    
+  <script src="script.js"></script>
+</body>
+</html>
