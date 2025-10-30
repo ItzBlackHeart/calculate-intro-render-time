@@ -102,7 +102,7 @@ document.addEventListener("keydown", (event) => {
         }
       }
     }
-  } // --- การจัดการปุ่มลูกศรซ้าย/ขวา (เดิม) ---
+  } // การจัดการปุ่มลูกศรซ้าย/ขวา (เดิม) 
   if (index !== -1) {
     if (event.key === "ArrowRight") {
       event.preventDefault(); // ย้ายไป input ถัดไป หรือวนกลับไปที่ input แรก
