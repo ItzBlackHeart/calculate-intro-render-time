@@ -74,54 +74,46 @@ document.getElementById("calculateButton").addEventListener("click", () => {
 
 // ควบคุมด้วยคีย์บอร์ด
 document.addEventListener("keydown", (event) => {
-  const active = document.activeElement; // 1. ป้องกันไม่ให้พิมพ์เครื่องหมาย "+" หรือ "-" ลงในช่อง Input
+  const active = document.activeElement;
+  const inputs = Array.from(document.querySelectorAll('input[type="number"]'));
+  const index = inputs.indexOf(active); // --- การจัดการคีย์บอร์ดหลัก (เดิม) --- // ป้องกันไม่ให้พิมพ์เครื่องหมาย "+" ลงในช่อง input
 
-  if (
-    (event.key === "+" || event.key === "-") &&
-    active &&
-    active.tagName === "INPUT" &&
-    active.type === "number"
-  ) {
-    event.preventDefault();
-  } // --- การจัดการคีย์บอร์ดหลัก --- // เมื่อกด "+" ให้เพิ่มฟอร์ม
   if (event.key === "+") {
+    event.preventDefault();
     document.getElementById("addButton").click();
-    return; // ออกจากฟังก์ชัน
+    return;
   } // Enter = คำนวณเวลา
 
   if (event.key === "Enter") {
     event.preventDefault();
     document.getElementById("calculateButton").click();
-  } // 2. ลบฟอร์มที่โฟกัสอยู่เมื่อกด "Delete" หรือ "-"
+  } // - หรือ Delete = ลบฟอร์มที่โฟกัสอยู่
 
   if (event.key === "Delete" || event.key === "-") {
     if (active && active.tagName === "INPUT") {
-      const formToRemove = active.closest(".timeForm"); // เงื่อนไข: ต้องมีฟอร์มมากกว่า 1 ฟอร์มถึงจะลบได้
+      const formToRemove = active.closest(".timeForm");
       if (formToRemove && document.querySelectorAll(".timeForm").length > 1) {
-        // ไม่ต้องเรียก event.preventDefault() ซ้ำ เพราะถูกเรียกแล้วที่ด้านบน
-        formToRemove.remove(); // โฟกัสไปที่ฟอร์มสุดท้าย
+        event.preventDefault();
+        formToRemove.remove(); // หลังจากลบฟอร์มแล้ว ควรพยายามย้ายโฟกัสกลับไปที่ฟอร์มอื่น
         const allForms = document.querySelectorAll(".timeForm");
         if (allForms.length > 0) {
-          allForms[allForms.length - 1].querySelector(".minutes")?.focus();
+          // โฟกัสไปที่ช่อง 'นาที' ของฟอร์มแรกที่เหลืออยู่
+          allForms[0].querySelector(".minutes")?.focus();
         }
       }
     }
-  } // ... (ส่วนการจัดการ ArrowLeft/Right และ ArrowUp/Down ที่เหลือ) // ย้ายโค้ดเดิมที่เหลือมาไว้ที่นี่:
-
-  const inputs = Array.from(document.querySelectorAll('input[type="number"]'));
-  const index = inputs.indexOf(active);
-
+  } // --- การจัดการปุ่มลูกศรซ้าย/ขวา (เดิม) ---
   if (index !== -1) {
     if (event.key === "ArrowRight") {
-      event.preventDefault();
+      event.preventDefault(); // ย้ายไป input ถัดไป หรือวนกลับไปที่ input แรก
       const next = inputs[index + 1] || inputs[0];
       next.focus();
     } else if (event.key === "ArrowLeft") {
-      event.preventDefault();
+      event.preventDefault(); // ย้ายไป input ก่อนหน้า หรือวนกลับไปที่ input สุดท้าย
       const prev = inputs[index - 1] || inputs[inputs.length - 1];
       prev.focus();
     }
-  }
+  } // ⬇️ --- การจัดการปุ่มลูกศรขึ้น/ลง (แก้ไขใหม่) --- ⬆️ // ย้ายโฟกัสไปยังช่องถัดไป/ก่อนหน้าในคอลัมน์เดียวกัน (ชั่วโมง, นาที, หรือวินาที)
 
   if (
     active &&
